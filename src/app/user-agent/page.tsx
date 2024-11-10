@@ -1,7 +1,15 @@
 import { UserAgent } from "@/views/userAgent";
+import DisableJS from "@/views/userAgent/DisableJS";
+import { headers } from "next/headers";
+import { Suspense } from "react";
 
 const UserAgentRoot = () => {
-    return <UserAgent />;
+    const userAgent = headers().get('user-agent') || 'Unknown';
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <UserAgent userAgentFromServer={userAgent} />
+        </Suspense>
+    );
 };
 
 export default UserAgentRoot;

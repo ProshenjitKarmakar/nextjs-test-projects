@@ -1,7 +1,7 @@
 import { UserAgent } from "@/views/userAgent";
 
 const UserAgentRoot = () => {
-  return <UserAgent />;
+    return <UserAgent />;
 };
 
 export default UserAgentRoot;

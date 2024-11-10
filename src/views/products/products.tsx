@@ -1,12 +1,12 @@
 "use client";
 
+import React from "react";
 import { BackToHome } from "@/components/backToHome/backToHome";
 import { PRODUCTS_DATA } from "@/data/productsData";
 import { usePagination } from "@/hooks/usePagination";
 import { PaginationControls } from "@/views/products/paginationControls/paginationControls";
 import { ProductList } from "@/views/products/productList/productList";
 import { ProductModal } from "@/views/products/productModal/productModal";
-import React from "react";
 
 export const Products: React.FC = () => {
     const {

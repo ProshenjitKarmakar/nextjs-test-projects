@@ -11,31 +11,31 @@ import { PRODUCTS_DATA } from "@/data/productsData";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const Products: React.FC = () => {
-    const {
-        currentPage,
-        totalPages,
-        selectedProduct,
-        paginatedItems: paginatedProducts,
-        handlePageChange,
-        handleOpenModal,
-        handleCloseModal,
-    } = usePagination({ items: PRODUCTS_DATA, itemsPerPage: 5 });
+const {
+    currentPage,
+    totalPages,
+    selectedProduct,
+    paginatedItems: paginatedProducts,
+    handlePageChange,
+    handleOpenModal,
+    handleCloseModal,
+} = usePagination({ items: PRODUCTS_DATA, itemsPerPage: 5 });
 
 
 
-    return (
-        <div>
-            <BackToHome />
-            <ProductList products={paginatedProducts} onOpenModal={handleOpenModal} />
-            <div className="h-4" />
-            <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-            />
-            {selectedProduct && (
-                <ProductModal product={selectedProduct} onClose={handleCloseModal} />
-            )}
-        </div>
-    );
+return (
+    <div>
+        <BackToHome />
+        <ProductList products={paginatedProducts} onOpenModal={handleOpenModal} />
+        <div className="h-4" />
+        <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+        />
+        {selectedProduct && (
+            <ProductModal product={selectedProduct} onClose={handleCloseModal} />
+        )}
+    </div>
+);
 };

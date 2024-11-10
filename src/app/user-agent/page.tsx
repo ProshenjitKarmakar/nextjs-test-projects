@@ -1,5 +1,4 @@
 import { UserAgent } from "@/views/userAgent";
-import DisableJS from "@/views/userAgent/DisableJS";
 import { headers } from "next/headers";
 import { Suspense } from "react";
 

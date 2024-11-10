@@ -3,7 +3,6 @@
 import { BackToHome } from "@/components/backToHome/backToHome";
 import { useUserAgentContext } from "@/components/providers/userAgentProvider";
 import DisableJS from "./DisableJS";
-import { Suspense } from "react";
 
 interface IProps {
     userAgentFromServer: string

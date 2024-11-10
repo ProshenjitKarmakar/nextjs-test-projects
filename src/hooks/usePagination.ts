@@ -9,65 +9,64 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const usePagination = <T>({
-items,
-itemsPerPage,
-initialPage = 1,
+    items,
+    itemsPerPage,
+    initialPage = 1,
 }: PaginationConfig<T>): PaginationResult<T> => {
-const router: AppRouterInstance = useRouter();
-const searchParams = useSearchParams();
-const productId = searchParams.get('product-id');
-const [currentPage, setCurrentPage] = useState<number>(initialPage);
-const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-const totalPages = useMemo(
-    () => calculateTotalPages(items.length, itemsPerPage),
-    [items, itemsPerPage]
-);
+    const router: AppRouterInstance = useRouter();
+    const searchParams = useSearchParams();
+    const productId = searchParams.get('product-id');
+    const [currentPage, setCurrentPage] = useState<number>(initialPage);
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const totalPages = useMemo(
+        () => calculateTotalPages(items.length, itemsPerPage),
+        [items, itemsPerPage]
+    );
 
-const paginatedItems = useMemo(
-    () => getPaginatedItems(items, currentPage, itemsPerPage),
-    [items, currentPage, itemsPerPage]
-);
+    const paginatedItems = useMemo(
+        () => getPaginatedItems(items, currentPage, itemsPerPage),
+        [items, currentPage, itemsPerPage]
+    );
 
-useEffect(() => {
-    if (productId) {
-        const getProduct: Product | undefined = (paginatedItems as Product[]).find((item: Product) => item.id === productId);
-        console.log("======getProduct====", getProduct);
-        setSelectedProduct(getProduct as Product);
-    }
-}, [productId])
+    useEffect(() => {
+        if (productId) {
+            const getProduct: Product | undefined = (paginatedItems as Product[]).find((item: Product) => item.id === productId);
+            setSelectedProduct(getProduct as Product);
+        }
+    }, [productId, paginatedItems])
 
-const handleOpenModal = useCallback((product: Product) => {
-    if (product?.id) {
-        setSelectedProduct(product);
-        const url = `/products?product-id=${product?.id}`;
+    const handleOpenModal = useCallback((product: Product) => {
+        if (product?.id) {
+            setSelectedProduct(product);
+            const url = `/products?product-id=${product?.id}`;
+            router.push(url);
+        } else {
+            console.log('Product not found!')
+        }
+    }, [router]);
+
+    const handleCloseModal = useCallback(() => {
+        setSelectedProduct(null);
+        const url = `/products`;
         router.push(url);
-    } else {
-        console.log('Product not found!')
-    }
-}, []);
+    }, [router]);
 
-const handleCloseModal = useCallback(() => {
-    setSelectedProduct(null);
-    const url = `/products`;
-    router.push(url);
-}, []);
+    const handlePageChange = useCallback(
+        (direction: "next" | "prev") => {
+            setCurrentPage((prevPage) =>
+                getNextPage(prevPage, direction, totalPages)
+            );
+        },
+        [totalPages]
+    );
 
-const handlePageChange = useCallback(
-    (direction: "next" | "prev") => {
-        setCurrentPage((prevPage) =>
-            getNextPage(prevPage, direction, totalPages)
-        );
-    },
-    [totalPages]
-);
-
-return {
-    currentPage,
-    totalPages,
-    paginatedItems,
-    selectedProduct,
-    handlePageChange,
-    handleOpenModal,
-    handleCloseModal,
-};
+    return {
+        currentPage,
+        totalPages,
+        paginatedItems,
+        selectedProduct,
+        handlePageChange,
+        handleOpenModal,
+        handleCloseModal,
+    };
 };
